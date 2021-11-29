@@ -9,15 +9,25 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 @TeleOp(name="FirstOpMode", group="TeleOp")
 public class FirstOpMode extends OpMode {
 
+    // motors and stuff
     DcMotor leftWheel;
     DcMotor rightWheel;
+    DcMotor intake;
+
+    // Wheel Power
     double drivePower = 0.5;
+    double leftWheelPower;
+    double rightWheelPower;
+
+
     @Override
     public void init() {
         leftWheel = hardwareMap.dcMotor.get("left_wheel");
         rightWheel = hardwareMap.dcMotor.get("right_wheel");
 
-        rightWheel.setDirection(DcMotor.Direction.REVERSE);
+        leftWheel.setDirection(DcMotor.Direction.REVERSE);
+
+        intake = hardwareMap.dcMotor.get("intake");
     }
     @Override
     public void start() {
@@ -25,8 +35,19 @@ public class FirstOpMode extends OpMode {
     }
     @Override
     public void loop() {
-        leftWheel.setPower(drivePower);
-        rightWheel.setPower(drivePower);
+
+        leftWheelPower = gamepad1.left_stick_y;
+        rightWheelPower = gamepad1.right_stick_y;
+
+        leftWheel.setPower(leftWheelPower);
+        rightWheel.setPower(rightWheelPower);
+        
+
+        if (gamepad1.a){
+            intake.setPower(drivePower);
+        } else {
+            intake.setPower(0);
+        }
     }
 
     @Override
